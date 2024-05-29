@@ -1,0 +1,12 @@
+FROM python:3.12
+
+RUN pip install poetry
+
+COPY backend /opt/backend/backend
+COPY README.md pyproject.toml /opt/backend
+
+WORKDIR /opt/backend
+
+RUN poetry install
+
+CMD ["poetry", "run", "uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "80"]
