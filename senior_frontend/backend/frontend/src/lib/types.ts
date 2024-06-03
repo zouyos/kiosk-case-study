@@ -6,6 +6,6 @@ export type ResultType = {
 };
 
 export type TimePeriodType = {
-  startDate: string,
-  endDate: string
+  startDate?: string,
+  endDate?: string
 };

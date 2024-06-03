@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IndicatorsAPI } from "./api/indicators";
-import { type ResultType } from "./lib/types";
+import { TimePeriodType, type ResultType } from "./lib/types";
 import style from "./style.module.css";
 import Card from "./components/Card/Card";
 
@@ -13,8 +13,8 @@ const indicators = [
 
 const App = () => {
   const [urlIndicators, setUrlIndicators] = useState<string[]>(indicators);
-  const [timePeriod, setTimePeriod] = useState({ startDate: "", endDate: "" });
-  const [results, setResults] = useState<ResultType[] | null>([]);
+  const [timePeriod, setTimePeriod] = useState<TimePeriodType>({});
+  const [results, setResults] = useState<ResultType[]>([]);
 
   const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -26,21 +26,18 @@ const App = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.name === "startDate") {
-      setTimePeriod({ ...timePeriod, startDate: e.target.value });
-    }
-    if (e.target.name === "endDate") {
-      setTimePeriod({ ...timePeriod, endDate: e.target.value });
-    }
+    const { name, value } = e.target;
+    setTimePeriod((prev) => ({ ...prev, [name]: value }));
   };
 
   const generateInfo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       if (
-        timePeriod &&
-        urlIndicators.length > 0 &&
-        timePeriod.startDate <= timePeriod.endDate
+        timePeriod.startDate &&
+        timePeriod.endDate &&
+        timePeriod.startDate <= timePeriod.endDate &&
+        urlIndicators?.length > 0
       ) {
         const results = await IndicatorsAPI.indicators(
           timePeriod.startDate,
@@ -57,6 +54,8 @@ const App = () => {
       }
     }
   };
+
+  console.log(timePeriod);
 
   return (
     <div
