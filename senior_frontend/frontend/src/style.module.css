@@ -1,0 +1,17 @@
+.mainContainer {
+  min-height: 100vh;
+  margin: 0;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form {
+  width: fit-content;
+  height: fit-content;
+}
+
+.results {
+  height: 33rem;
+  overflow: scroll;
+}
